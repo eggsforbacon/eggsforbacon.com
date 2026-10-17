@@ -1,0 +1,38 @@
+{
+  "Nav": {
+    "close": "Close",
+    "whatsappMessage": "Hi%20Mara%2C%20I%20saw%20your%20site%20and%20would%20like%20to%20contact%20you.",
+    "/": {
+      "label": "Home",
+      "description": "@ggsforbacon"
+    },
+    "/music": {
+      "label": "Music",
+      "description": "Music taste, recommendations, and projects."
+    },
+    "/software": {
+      "label": "Software",
+      "description": "Projects, experience and languages."
+    },
+    "/contact": {
+      "label": "Contact",
+      "description": "Reach out, even just to talk."
+    },
+    "/about": {
+      "label": "About",
+      "description": "Get to know me beyond the name."
+    },
+    "/blog": {
+      "label": "Blog",
+      "description": "Entries of my own making."
+    }
+  },
+  "Home": {
+    "title": "WHO?",
+    "copy": {
+      "name": "Mara.",
+      "body": "Software Engineer. Musician."
+    },
+    "intro": "Over 5 years of programming experience in Web and Mobile applications, a passion for music, the universe and languages."
+  }
+}
