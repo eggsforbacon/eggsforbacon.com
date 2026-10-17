@@ -13,9 +13,7 @@ import { QueryParams } from "next-intl/navigation";
 
 const Menu = () => {
   const { isMenuOpen, toggleMenu, href, setHref } = navigationStore();
-  const [tl, setTl] = useState<gsap.core.Timeline>(
-    gsap.timeline({ paused: true }),
-  );
+  const [tl, setTl] = useState<gsap.core.Timeline | undefined>(undefined);
   const t = useTranslations("Nav");
 
   const router = useRouter();
@@ -54,9 +52,9 @@ const Menu = () => {
     if (isMenuOpen) tl.play();
     else {
       tl.reverse().then((_tl) => {
-        router.push(href)
-      })
-    };
+        router.push(href);
+      });
+    }
   }, [isMenuOpen, tl, href]);
 
   useEffect(() => {
