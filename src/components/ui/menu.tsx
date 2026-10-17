@@ -13,7 +13,7 @@ import { QueryParams } from "next-intl/navigation";
 
 const Menu = () => {
   const { isMenuOpen, toggleMenu, href, setHref } = navigationStore();
-  const [tl, setTl] = useState<gsap.core.Timeline | undefined>(undefined);
+  const [tl, setTl] = useState<gsap.core.Timeline | null>(null);
   const t = useTranslations("Nav");
 
   const router = useRouter();
@@ -32,14 +32,14 @@ const Menu = () => {
           .timeline({ paused: true })
           .to(".g-menu-overlay", {
             clipPath: "polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)",
-            duration: 0.75,
+            duration: 0.55,
             ease: "power4.inOut",
           })
           .to(".g-menu-link-item-holder", {
             y: -15,
-            duration: 0.75,
+            duration: 0.55,
             stagger: 0.15,
-            delay: -0.45,
+            delay: -0.15,
             ease: "power4.inOut",
           }),
       );
@@ -48,7 +48,7 @@ const Menu = () => {
   );
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!containerRef.current || tl === null || tl === undefined) return;
     if (isMenuOpen) tl.play();
     else {
       tl.reverse().then((_tl) => {
