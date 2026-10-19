@@ -47,9 +47,9 @@ jobs:
             npm run build
 
             if [ -f ecosystem.config.js ]; then
-              pm2 reload ecosystem.config.js --env production || pm2 start ecosystem.config.js --env production
+              pm2 reload ecosystem.config.js --env production || PORT=3027 pm2 start ecosystem.config.js --env production
             else
-              pm2 reload "eggsforbacon.com" || pm2 start npm --name "eggsforbacon.com" -- start
+              pm2 reload "eggsforbacon.com" || PORT=3027 pm2 start npm --name "eggsforbacon.com" -- start
             fi
 
             pm2 save

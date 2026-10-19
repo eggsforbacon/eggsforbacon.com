@@ -14,6 +14,7 @@ import { QueryParams } from "next-intl/navigation";
 const Menu = () => {
   const { isMenuOpen, toggleMenu, href, setHref } = navigationStore();
   const [tl, setTl] = useState<gsap.core.Timeline | null>(null);
+  const [mount, setMount] = useState<boolean>(false);
   const t = useTranslations("Nav");
 
   const router = useRouter();
@@ -22,6 +23,7 @@ const Menu = () => {
 
   useGSAP(
     () => {
+      setMount(true);
       if (!containerRef.current) return;
       gsap.set(".g-menu-link-item-holder", {
         y: "120%",
@@ -58,7 +60,7 @@ const Menu = () => {
   }, [isMenuOpen, tl, href]);
 
   useEffect(() => {
-    toggleMenu();
+    if (mount) toggleMenu();
   }, [href]);
 
   const handleMenuNavigate = (
