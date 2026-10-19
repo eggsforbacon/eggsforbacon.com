@@ -24,6 +24,7 @@ const Menu = () => {
   useGSAP(
     () => {
       setMount(true);
+      console.log("GSAP triggered.");
       if (!containerRef.current) return;
       gsap.set(".g-menu-link-item-holder", {
         y: "120%",
@@ -45,22 +46,29 @@ const Menu = () => {
             ease: "power4.inOut",
           }),
       );
+      console.log("Timeline set.");
     },
     { scope: containerRef },
   );
 
   useEffect(() => {
-    if (!containerRef.current || tl === null || tl === undefined) return;
-    if (isMenuOpen) tl.play();
-    else {
+    if (!containerRef.current || tl === null || tl === undefined ||!mount) return;
+    if (isMenuOpen) {
+      tl.play();
+      console.log("Playing timeline.");
+    } else {
+      console.log("Playing timeline in reverse.");
       tl.reverse().then((_tl) => {
         router.push(href);
       });
     }
-  }, [isMenuOpen, tl, href]);
+  }, [isMenuOpen, tl]);
 
   useEffect(() => {
-    if (mount) toggleMenu();
+    if (mount) {
+      toggleMenu();
+      console.log("Menu toggled.");
+    }
   }, [href]);
 
   const handleMenuNavigate = (
