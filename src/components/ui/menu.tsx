@@ -1,127 +1,70 @@
 "use client";
 
-import { Link, usePathname, useRouter } from "@/i18n/navigation";
+import { usePathname, useRouter } from "@/i18n/navigation";
 import ExternalLink from "next/link";
-import { Path, PATHS } from "@/i18n/routing";
-import navigationStore from "@/store/navigation";
+import { PATHS } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { useGSAP } from "@gsap/react";
-import { cn } from "@/utils";
-import { QueryParams } from "next-intl/navigation";
+import { cn } from "@/utils/utils";
+import MenuLink from "./menu-link";
+import TransitionLink from "./transition-link";
+import { Page } from "@/utils/animations";
 
 const Menu = () => {
-  const { isMenuOpen, toggleMenu, href, setHref } = navigationStore();
-  const [tl, setTl] = useState<gsap.core.Timeline | null>(null);
-  const [mount, setMount] = useState<boolean>(false);
   const t = useTranslations("Nav");
-
-  const router = useRouter();
   const pathname = usePathname();
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      setMount(true);
-      console.log("GSAP triggered.");
-      if (!containerRef.current) return;
-      gsap.set(".g-menu-link-item-holder", {
-        y: "120%",
-      });
-
-      setTl(
-        gsap
-          .timeline({ paused: true })
-          .to(".g-menu-overlay", {
-            clipPath: "polygon(0% 0%, 0% 100%, 100% 100%, 100% 0%)",
-            duration: 0.55,
-            ease: "power4.inOut",
-          })
-          .to(".g-menu-link-item-holder", {
-            y: -15,
-            duration: 0.55,
-            stagger: 0.15,
-            delay: -0.15,
-            ease: "power4.inOut",
-          }),
-      );
-      console.log("Timeline set.");
-    },
-    { scope: containerRef },
-  );
-
-  useEffect(() => {
-    if (!containerRef.current || tl === null || tl === undefined ||!mount) return;
-    if (isMenuOpen) {
-      tl.play();
-      console.log("Playing timeline.");
-    } else {
-      console.log("Playing timeline in reverse.");
-      tl.reverse().then((_tl) => {
-        router.push(href);
-      });
-    }
-  }, [isMenuOpen, tl]);
-
-  useEffect(() => {
-    if (mount) {
-      toggleMenu();
-      console.log("Menu toggled.");
-    }
-  }, [href]);
-
-  const handleMenuNavigate = (
-    hrefParam: Path | (Path & { query?: QueryParams }),
-  ) => {
-    if (pathname !== hrefParam) {
-      setHref(hrefParam);
-    }
-  };
 
   return (
-    <nav
-      ref={containerRef}
-      className={cn("fixed top-0 h-screen w-screen font-semibold")}
-    >
+    <nav className={cn("fixed top-0 h-screen w-screen font-semibold")}>
       <div
         className={cn("justify-between items-center w-full px-16 py-6 flex")}
       >
-        <div>
-          <Link href={"/"}>@eggsforbacon</Link>
-        </div>
-        <button onClick={() => toggleMenu()} className={cn("cursor-pointer")}>
-          <p>Menu</p>
-        </button>
+        <MenuLink boxColor="bg-flamingo">
+          <TransitionLink
+            href={"/"}
+            className="transition-all delay-200 hover:text-flamingo"
+            onOut={Page.animateOut}
+          >
+            @eggsforbacon
+          </TransitionLink>
+        </MenuLink>
+        <TransitionLink
+          href={pathname}
+          className={cn("cursor-pointer")}
+          isExitTransition={false}
+        >
+          Menu
+        </TransitionLink>
       </div>
-      <div className="g-menu-overlay fixed bg-flamingo flex flex-col w-full h-full top-0 px-32 py-16 justify-between">
+      <div
+        id="menu-container"
+        className="g-menu-overlay fixed bg-flamingo flex flex-col w-full h-full top-0 px-32 py-16 justify-between"
+      >
         <div className="flex justify-between items-center w-full">
-          <div>
-            <Link href={"/"}>@eggsforbacon</Link>
-          </div>
-          <button onClick={() => toggleMenu()} className={cn("cursor-pointer")}>
-            <p>{t("close")} &#10005; </p>
-          </button>
+          <MenuLink>
+            <TransitionLink href={"/"} onOut={Page.animateOut}>
+              @eggsforbacon
+            </TransitionLink>
+          </MenuLink>
+          <TransitionLink href={pathname} className={cn("cursor-pointer")}>
+            {t("close")} &#10005;
+          </TransitionLink>
         </div>
         <ul className="flex flex-col -gap-1">
           {PATHS.map((path, index) => {
             return (
               <li key={index} className="relative overflow-clip">
-                <button
-                  aria-roledescription="Anchor Element"
-                  onClick={() => handleMenuNavigate(path)}
-                  className="g-menu-link-item-holder"
-                >
-                  <p
+                <MenuLink>
+                  <TransitionLink
+                    href={path}
                     className={cn(
                       "text-8xl tracking-tighter cursor-pointer font-normal",
-                      "transition-all duration-200 ease-in-out",
+                      "transition-all delay-200 duration-200 ease-in-out",
                       "hover:text-white hover:font-black",
                     )}
                   >
                     {t(`${path}.label`)}
-                  </p>
-                </button>
+                  </TransitionLink>
+                </MenuLink>
               </li>
             );
           })}
@@ -131,40 +74,52 @@ const Menu = () => {
         >
           <ul className="text-3xl flex flex-col gap-2 justify-end">
             <li>
-              <ExternalLink
-                href={"https://instagram.com/eggsforbacon__"}
-                target="_blank"
-                rel="noreferer"
-              >
-                Instagram
-              </ExternalLink>
+              <MenuLink>
+                <ExternalLink
+                  href={"https://instagram.com/eggsforbacon__"}
+                  target="_blank"
+                  rel="noreferer"
+                  className="transition-all delay-200 duration-200 hover:text-white"
+                >
+                  Instagram
+                </ExternalLink>
+              </MenuLink>
             </li>
             <li>
-              <ExternalLink
-                href={"https://github.com/eggsforbacon"}
-                target="_blank"
-                rel="noreferer"
-              >
-                GitHub
-              </ExternalLink>
+              <MenuLink>
+                <ExternalLink
+                  href={"https://github.com/eggsforbacon"}
+                  target="_blank"
+                  rel="noreferer"
+                  className="transition-all delay-200 duration-200 hover:text-white"
+                >
+                  GitHub
+                </ExternalLink>
+              </MenuLink>
             </li>
             <li>
-              <ExternalLink
-                href={"https://linkedin.com/in/samuelhernandezcifuentes--"}
-                target="_blank"
-                rel="noreferer"
-              >
-                LinkedIn
-              </ExternalLink>
+              <MenuLink>
+                <ExternalLink
+                  href={"https://linkedin.com/in/samuelhernandezcifuentes--"}
+                  target="_blank"
+                  rel="noreferer"
+                  className="transition-all delay-200 duration-200 hover:text-white"
+                >
+                  LinkedIn
+                </ExternalLink>
+              </MenuLink>
             </li>
             <li>
-              <ExternalLink
-                href={`https://wa.me/491727549523?text=${t("whatsappMessage")}`}
-                target="_blank"
-                rel="noreferer"
-              >
-                WhatsApp
-              </ExternalLink>
+              <MenuLink>
+                <ExternalLink
+                  href={`https://wa.me/491727549523?text=${t("whatsappMessage")}`}
+                  target="_blank"
+                  rel="noreferer"
+                  className="transition-all delay-200 duration-200 hover:text-white"
+                >
+                  WhatsApp
+                </ExternalLink>
+              </MenuLink>
             </li>
           </ul>
           <ul className="text-xl flex flex-col gap-2 justify-end">
