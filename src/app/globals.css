@@ -3,42 +3,9 @@
 @theme {
     --font-syncopate: var(--font-syncopate), sans-serif;
     --font-lexend: var(--font-lexend), sans-serif;
-
-    --color-nebula-50: #f8fbfb;
-    --color-nebula-100: #f3f6f6;
-    --color-nebula-200: #e2e9e5; /*<-- MAIN*/
-    --color-nebula-300: #cfdbd5;
-    --color-nebula-400: #97afa3;
-    --color-nebula-500: #638173;
-    --color-nebula-600: #475e56;
-    --color-nebula-700: #364a42;
-    --color-nebula-800: #202d24;
-    --color-nebula-900: #13201a;
-    --color-nebula-950: #070e0a;
-
-    --color-forest-green-50: #f1fcf2;
-    --color-forest-green-100: #dff9e2;
-    --color-forest-green-200: #c1f1c7;
-    --color-forest-green-300: #91e49c;
-    --color-forest-green-400: #5ace6a;
-    --color-forest-green-500: #33b445;
-    --color-forest-green-600: #259435;
-    --color-forest-green-700: #248232; /*<-- MAIN*/
-    --color-forest-green-800: #1e5d28;
-    --color-forest-green-900: #1b4c23;
-    --color-forest-green-950: #092a0f;
-
-    --color-inch-worm-50: #fbffe6;
-    --color-inch-worm-100: #f4fec9;
-    --color-inch-worm-200: #e9fd99;
-    --color-inch-worm-300: #d6f85e;
-    --color-inch-worm-400: #c1ed2e;
-    --color-inch-worm-500: #a8db0f; /*<-- MAIN*/
-    --color-inch-worm-600: #7ea907;
-    --color-inch-worm-700: #5f800b;
-    --color-inch-worm-800: #4c650f;
-    --color-inch-worm-900: #405611;
-    --color-inch-worm-950: #213003;
+    --font-tik-tok-sans: var(--font-tik-tok-sans), sans-serif;
+    --font-cossette: var(--font-cossette), sans-serif;
+    --font-cossette-titre: var(--font-cossette-titre), sans-serif;
 
     --color-flamingo-50: #fef4ee;
     --color-flamingo-100: #fce6d8;
@@ -52,10 +19,12 @@
     --color-flamingo-900: #752019;
     --color-flamingo-950: #3f0d0b;
 
-    --color-forest-green: var(--color-forest-green-700);
-    --color-nebula: var(--color-nebula-200);
-    --color-inch-worm: var(--color-inch-worm-500);
     --color-flamingo: var(--color-flamingo-500);
+    --color-vintage-grape: #51355A;
+    --color-dark-amethyst: #2a0c4e;
+    --color-muted-teal: #92BFB1;
+    --color-black-cherry: #5A0001;
+    --color-beige: #f5f8de;
     --color-graphite: #333533;
     --color-carbon-black: #242423;
 }

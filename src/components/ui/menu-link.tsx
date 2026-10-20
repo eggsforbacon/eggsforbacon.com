@@ -5,9 +5,11 @@ import { ReactNode, useState } from "react";
 const MenuLink = ({
   children,
   boxColor = "bg-black",
+  direction = "right",
 }: {
   children: ReactNode | ReactNode[];
   boxColor?: string;
+  direction?: "left" | "right";
 }) => {
   const [hoverState, setHoverState] = useState<"unhovered" | "entered">(
     "unhovered",
@@ -17,9 +19,9 @@ const MenuLink = ({
     switch (hoverState) {
       default:
       case "unhovered":
-        return "-translate-x-full";
+        return direction === "right" ? "-translate-x-full" : "translate-x-full";
       case "entered":
-        return "translate-x-full";
+        return direction === "right" ? "translate-x-full" : "-translate-x-full";
     }
   };
 
@@ -33,7 +35,7 @@ const MenuLink = ({
         {children}
       </div>
       <span
-        className={`pointer-events-none top-0 left-0 absolute h-[120%] w-[200%] ${boxColor} transition-all duration-800 ease-in-out ${generateHoverClass()}`}
+        className={`pointer-events-none top-0 ${direction === "right" ? "left-0" : "right-0"} absolute h-[120%] w-[200%] ${boxColor} transition-all duration-800 ease-in-out ${generateHoverClass()}`}
       />
     </div>
   );

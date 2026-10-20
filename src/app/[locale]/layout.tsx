@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Lexend, Syncopate } from "next/font/google";
+import { Lexend, Syncopate, TikTok_Sans, Cossette_Texte, Cossette_Titre } from "next/font/google";
 import "./../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
@@ -16,6 +16,24 @@ const syncopate = Syncopate({
   variable: "--font-syncopate",
   subsets: ["latin"],
 });
+
+const ttSans = TikTok_Sans({
+  weight: "variable",
+  subsets: ["latin-ext"],
+  variable: "--font-tik-tok-sans",
+});
+
+const cossette = Cossette_Texte({
+  weight: ["400", "700"],
+  subsets: ["latin-ext"],
+  variable: "--font-cossette",
+});
+
+const cossetteTitre = Cossette_Titre({
+  weight: ["400", "700"],
+  subsets: ["latin-ext"],
+  variable: "--font-cossette-titre",
+})
 
 export const metadata: Metadata = {
   title: "Mara/Eggsforbacon",
@@ -36,7 +54,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${lexend.variable} ${syncopate.variable} h-full antialiased`}
+      className={`${lexend.variable} ${syncopate.variable} ${ttSans.variable} ${cossette.variable} ${cossetteTitre.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col relative">
         <NextIntlClientProvider>

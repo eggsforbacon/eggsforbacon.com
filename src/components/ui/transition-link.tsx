@@ -5,7 +5,7 @@ import { Menu } from "@/utils/animations";
 import { QueryParams } from "next-intl/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode } from "react";
+import { ReactNode, Ref } from "react";
 
 const TransitionLink = ({
   href,
@@ -14,6 +14,7 @@ const TransitionLink = ({
   onOut = Menu.animateOut,
   isExitTransition = true,
   onIn = Menu.animateIn,
+  ref = undefined
 }: {
   href?: Path | (Path & { query?: QueryParams });
   className?: string;
@@ -24,7 +25,8 @@ const TransitionLink = ({
     router: AppRouterInstance,
   ) => void;
   onIn?: () => void;
-  isExitTransition?: boolean;
+    isExitTransition?: boolean;
+  ref?: Ref<HTMLButtonElement | null> | undefined
 }) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -41,7 +43,7 @@ const TransitionLink = ({
   };
 
   return (
-    <button className={className} onClick={handleClick}>
+    <button className={"cursor-pointer! " + className} onClick={handleClick} ref={ref}>
       {children}
     </button>
   );

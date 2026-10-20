@@ -21,19 +21,23 @@ const Menu = () => {
         <MenuLink boxColor="bg-flamingo">
           <TransitionLink
             href={"/"}
-            className="transition-all delay-200 hover:text-flamingo"
+            className="transition-all delay-200 text-white/40 hover:text-flamingo text-3xl"
             onOut={Page.animateOut}
           >
             @eggsforbacon
           </TransitionLink>
         </MenuLink>
-        <TransitionLink
-          href={pathname}
-          className={cn("cursor-pointer")}
-          isExitTransition={false}
-        >
-          Menu
-        </TransitionLink>
+        <MenuLink boxColor="bg-flamingo" direction="left">
+          <TransitionLink
+            href={pathname}
+            className={cn(
+              "transition-all delay-200 text-white/40 hover:text-flamingo text-3xl",
+            )}
+            isExitTransition={false}
+          >
+            Menu
+          </TransitionLink>
+        </MenuLink>
       </div>
       <div
         id="menu-container"
@@ -41,13 +45,24 @@ const Menu = () => {
       >
         <div className="flex justify-between items-center w-full">
           <MenuLink>
-            <TransitionLink href={"/"} onOut={Page.animateOut}>
+            <TransitionLink
+              href={"/"}
+              onOut={Page.animateOut}
+              className=".g-menu-outer-links transition-all delay-200 hover:text-white text-3xl"
+            >
               @eggsforbacon
             </TransitionLink>
           </MenuLink>
-          <TransitionLink href={pathname} className={cn("cursor-pointer")}>
-            {t("close")} &#10005;
-          </TransitionLink>
+          <MenuLink direction="left">
+            <TransitionLink
+              href={pathname}
+              className={cn(
+                "transition-all delay-200 hover:text-white text-3xl",
+              )}
+            >
+              {t("close")} &#10005;
+            </TransitionLink>
+          </MenuLink>
         </div>
         <ul className="flex flex-col -gap-1">
           {PATHS.map((path, index) => {
@@ -57,7 +72,7 @@ const Menu = () => {
                   <TransitionLink
                     href={path}
                     className={cn(
-                      "text-8xl tracking-tighter cursor-pointer font-normal",
+                      "text-8xl tracking-tighter font-normal",
                       "transition-all delay-200 duration-200 ease-in-out",
                       "hover:text-white hover:font-black",
                     )}
