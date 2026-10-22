@@ -1,10 +1,12 @@
 import { Path } from "@/i18n/routing";
 import gsap from "gsap";
+import { Observer } from "gsap/Observer";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { QueryParams } from "next-intl/navigation";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-gsap.registerPlugin(SplitText);
+gsap.registerPlugin(SplitText, ScrollTrigger, Observer);
 
 export namespace Menu {
   export function animateIn() {
@@ -67,6 +69,35 @@ export namespace Menu {
       tl.play();
     }
   }
+
+  export function scrollFlex(navigation: HTMLDivElement) {
+    const tl = gsap
+      .timeline()
+      .set(navigation, {
+        top: 0,
+        width: "100%",
+        backgroundColor: "#fafafa00",
+        borderRadius: "0rem",
+      })
+      .to(navigation, {
+        position: "fixed",
+        top: "1rem",
+        left: "50%",
+        translateX: "-50%",
+        width: "40%",
+        padding: "1.5rem 2rem",
+        backgroundColor: "#fafafa1e",
+        borderRadius: "32rem",
+      });
+
+    ScrollTrigger.create({
+      animation: tl,
+      scrub: 0.5,
+      start: "40% 20%",
+      end: "+=100",
+      toggleActions: "play none reverse restart",
+    });
+  }
 }
 
 export namespace Page {
@@ -83,84 +114,74 @@ export namespace Page {
   ) {
     if (pathname !== href) router.push(href);
   }
+}
 
-  function playTrail(shape: Element) {
-    let tl = gsap.timeline();
-    tl.from(shape, {
-      opacity: 0,
-      scale: 0,
-      ease: "elastic.out(1,0.3)",
-    })
-      .to(
-        shape,
-        {
-          rotation: "random([-360, 360])",
-        },
-        "<",
-      )
-      .to(
-        shape,
-        {
-          y: "120vh",
-          ease: "back.in(.4)",
-          duration: 1,
-        },
-        0,
-      );
+export namespace Projects {
+  interface HoverAnimationArgs {
+    overlay: HTMLDivElement;
+    isFromAbove: boolean;
   }
 
-  function animateTrailElement(
-    c: { x: number; y: number },
-    wrapper: (index: number) => number,
-    index: number,
-    flair: Element[],
-  ) {
-    let wrappedIndex = wrapper(index);
+  export const hoverSlideInOverlay = ({
+    overlay,
+    isFromAbove,
+  }: HoverAnimationArgs) => {
+    const tl = gsap.timeline();
 
-    console.log(index, flair.length);
-
-    let s = flair[wrappedIndex];
-    gsap.killTweensOf(s);
-
-    gsap.set(s, {
-      clearProps: "all",
+    tl.set(overlay, {
+      y: isFromAbove ? "-100%" : "100%",
+      autoAlpha: 1,
+    }).to(overlay, {
+      y: "0%",
+      duration: 0.4,
+      ease: "power4.out",
     });
 
-    gsap.set(s, {
-      opacity: 1,
-      left: c.x,
-      top: c.y,
-      xPercent: -50,
-      yPercent: -50,
+    return tl;
+  };
+
+  export const hoverSlideOutOverlay = ({
+    overlay,
+    isFromAbove,
+  }: HoverAnimationArgs) => {
+    const tl = gsap.timeline();
+
+    tl.to(overlay, {
+      y: isFromAbove ? "-100%" : "100%",
+      duration: 0.4,
+      ease: "power4.inOut",
+      onComplete: () => {
+        gsap.set(overlay, { autoAlpha: 0 });
+      },
     });
 
-    playTrail(s);
-
-    index++;
-  }
-
-  export function createTrail(
-    c: { x: number; y: number },
-    last: { x: number; y: number },
-    cache: { x: number; y: number },
-    gap: number,
-    wrapper: (index: number) => number,
-    index: number,
-    flair: Element[],
-  ) {
-    let travelDistance = Math.hypot(last.x - c.x, last.y - c.y);
-
-    cache.x = gsap.utils.interpolate(cache.x || c.x, c.x, 0.1);
-    cache.y = gsap.utils.interpolate(cache.y || c.y, c.y, 0.1);
-
-    if (travelDistance > gap) {
-      animateTrailElement(c, wrapper, index, flair);
-      last = c;
-    }
-  }
+    return tl;
+  };
 }
 
 export namespace Hero {
+  export function animateSubtitle(sub: HTMLHeadingElement) {
+    if (sub) {
+      const chars = new SplitText(sub, {
+        type: "chars",
+        mask: "chars",
+        wordsClass: "",
+        charsClass: "",
+      });
+
+      const tl = gsap
+        .timeline()
+        .set(chars.chars, { y: "100%" })
+        .to(chars.chars, {
+          y: 0,
+          duration: 1,
+          stagger: 0.02,
+          delay: 0.75,
+          ease: "power4.inOut",
+        });
+    }
+  }
+
   export function animateCopy(copy: HTMLHeadingElement) {
     if (copy) {
       const copyChars = new SplitText(copy, {

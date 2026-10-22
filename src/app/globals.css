@@ -30,16 +30,16 @@
 }
 
 @layer base {
-    html {
-        @apply relative flex flex-col items-center justify-start;
-    }
 
-    body {
-        @apply max-w-480 w-full bg-linear-to-b from-neutral-400 to-neutral-200;
+    *:root {
+     @apply bg-neutral-900;
     }
 
     main {
-        @apply flex relative w-full h-screen;
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100vh;
     }
 }
 

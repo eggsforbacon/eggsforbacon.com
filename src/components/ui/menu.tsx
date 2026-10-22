@@ -8,20 +8,32 @@ import { cn } from "@/utils/utils";
 import MenuLink from "./menu-link";
 import TransitionLink from "./transition-link";
 import { Page } from "@/utils/animations";
+import { useEffect, useRef } from "react";
+import { Menu as MenuAnimations } from "@/utils/animations";
 
 const Menu = () => {
   const t = useTranslations("Nav");
   const pathname = usePathname();
+  const navigationRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (window && navigationRef.current !== null) {
+      MenuAnimations.scrollFlex(navigationRef.current);
+    }
+  }, [navigationRef]);
 
   return (
-    <nav className={cn("fixed top-0 h-screen w-screen font-semibold")}>
+    <nav
+      className={cn("top-0 left-0  h-screen w-full max-w-480 font-semibold")}
+    >
       <div
-        className={cn("justify-between items-center w-full px-16 py-6 flex")}
+        ref={navigationRef}
+        className={cn("fixed justify-between items-center px-16 py-6 flex backdrop-blur-2xl")}
       >
         <MenuLink boxColor="bg-flamingo">
           <TransitionLink
             href={"/"}
-            className="transition-all delay-200 text-white/40 hover:text-flamingo text-3xl"
+            className="transition-all delay-200 text-white/40 hover:text-flamingo text-xl"
             onOut={Page.animateOut}
           >
             @eggsforbacon
@@ -31,7 +43,7 @@ const Menu = () => {
           <TransitionLink
             href={pathname}
             className={cn(
-              "transition-all delay-200 text-white/40 hover:text-flamingo text-3xl",
+              "transition-all delay-200 text-white/40 hover:text-flamingo text-xl",
             )}
             isExitTransition={false}
           >
@@ -41,14 +53,14 @@ const Menu = () => {
       </div>
       <div
         id="menu-container"
-        className="g-menu-overlay fixed bg-flamingo flex flex-col w-full h-full top-0 px-32 py-16 justify-between"
+        className="g-menu-overlay fixed bg-flamingo flex flex-col w-full max-w-480 h-full top-0 px-32 py-16 justify-between"
       >
         <div className="flex justify-between items-center w-full">
           <MenuLink>
             <TransitionLink
               href={"/"}
               onOut={Page.animateOut}
-              className=".g-menu-outer-links transition-all delay-200 hover:text-white text-3xl"
+              className=".g-menu-outer-links transition-all delay-200 hover:text-white text-xl"
             >
               @eggsforbacon
             </TransitionLink>
@@ -57,7 +69,7 @@ const Menu = () => {
             <TransitionLink
               href={pathname}
               className={cn(
-                "transition-all delay-200 hover:text-white text-3xl",
+                "transition-all delay-200 hover:text-white text-xl",
               )}
             >
               {t("close")} &#10005;
@@ -72,7 +84,7 @@ const Menu = () => {
                   <TransitionLink
                     href={path}
                     className={cn(
-                      "text-8xl tracking-tighter font-normal",
+                      "text-7xl tracking-tighter font-normal",
                       "transition-all delay-200 duration-200 ease-in-out",
                       "hover:text-white hover:font-black",
                     )}
@@ -87,7 +99,7 @@ const Menu = () => {
         <div
           className={cn("flex flex-row-reverse items-center justify-between")}
         >
-          <ul className="text-3xl flex flex-col gap-2 justify-end">
+          <ul className="text-xl flex flex-col gap-2 justify-end">
             <li>
               <MenuLink>
                 <ExternalLink

@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Lexend, Syncopate, TikTok_Sans, Cossette_Texte, Cossette_Titre } from "next/font/google";
+import {
+  Lexend,
+  Syncopate,
+  TikTok_Sans,
+  Cossette_Texte,
+  Cossette_Titre,
+} from "next/font/google";
 import "./../globals.css";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
@@ -19,6 +25,7 @@ const syncopate = Syncopate({
 
 const ttSans = TikTok_Sans({
   weight: "variable",
+  axes: ["opsz", "slnt", "wdth"],
   subsets: ["latin-ext"],
   variable: "--font-tik-tok-sans",
 });
@@ -33,7 +40,7 @@ const cossetteTitre = Cossette_Titre({
   weight: ["400", "700"],
   subsets: ["latin-ext"],
   variable: "--font-cossette-titre",
-})
+});
 
 export const metadata: Metadata = {
   title: "Mara/Eggsforbacon",
@@ -54,12 +61,10 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
-      className={`${lexend.variable} ${syncopate.variable} ${ttSans.variable} ${cossette.variable} ${cossetteTitre.variable} h-full antialiased`}
+      className={`${lexend.variable} ${syncopate.variable} ${ttSans.variable} ${cossette.variable} ${cossetteTitre.variable} max-w-[100vw] flex flex-col h-full antialiased relative items-center justify-start bg-neutral-950`}
     >
-      <body className="min-h-full flex flex-col relative">
-        <NextIntlClientProvider>
-          {children}
-        </NextIntlClientProvider>
+      <body className="min-h-full flex flex-col relative max-w-480 w-full bg-neutral-800">
+        <NextIntlClientProvider>{children}</NextIntlClientProvider>
       </body>
     </html>
   );
